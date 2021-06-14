@@ -20,9 +20,9 @@ module Urls
     private
 
     def validate!
-      original_url = scheme? ? @original_url : "http://#{@original_url}"
+      @original_url = scheme? ? @original_url : "http://#{@original_url}"
 
-      return if original_url.match?(URL_REGEXP)
+      return if @original_url.match?(URL_REGEXP)
 
       raise StandardError, 'Invalid Url'
     end

@@ -5,13 +5,13 @@ require 'rails_helper'
 RSpec.describe Url, type: :model do
   describe 'validations' do
     it 'validates original URL is a valid URL' do
-      skip 'add test'
+      should allow_value('http://github.com')
+        .for(:original_url)
+        .on(:create)
     end
 
     it 'validates short URL is present' do
-      skip 'add test'
+      should validate_presence_of :short_url
     end
-
-    # add more tests
   end
 end

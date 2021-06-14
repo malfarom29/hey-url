@@ -12,6 +12,7 @@ require 'webdrivers'
 RSpec.describe 'Short Urls', type: :system do
   before do
     driven_by :selenium, using: :chrome
+    @short_url = FactoryBot.create(:url)
     # If using Firefox
     # driven_by :selenium, using: :firefox
     #
@@ -25,20 +26,21 @@ RSpec.describe 'Short Urls', type: :system do
     it 'shows a list of short urls' do
       visit root_path
       expect(page).to have_text('HeyURL!')
-      # expect page to show 10 urls
     end
   end
 
   describe 'show' do
     it 'shows a panel of stats for a given short url' do
       visit url_path('ABCDE')
-      # expect page to show the short url
+
+      expect(page).to have_text(@short_url.short_url)
+      expect(page).to have_text(@short_url.original_url)
     end
 
     context 'when not found' do
       it 'shows a 404 page' do
         visit url_path('NOTFOUND')
-        # expect page to be a 404
+        expect(page).to have_text('Url not found')
       end
     end
   end
@@ -47,24 +49,35 @@ RSpec.describe 'Short Urls', type: :system do
     context 'when url is valid' do
       it 'creates the short url' do
         visit '/'
-        # add more expections
+        page.fill_in(:url_original_url, with: 'github.com')
+        page.click_button('Shorten URL')
+
+        expect(page).to have_text('http://github.com'.truncate(12))
       end
 
       it 'redirects to the home page' do
         visit '/'
-        # add more expections
+        page.fill_in(:url_original_url, with: 'github.com')
+        page.click_button('Shorten URL')
+        expect(page).to have_current_path(urls_path)
       end
     end
 
     context 'when url is invalid' do
       it 'does not create the short url and shows a message' do
         visit '/'
-        # add more expections
+        page.fill_in(:url_original_url, with: 'github')
+        page.click_button('Shorten URL')
+
+        expect(page).to have_text('Invalid Url')
       end
 
       it 'redirects to the home page' do
         visit '/'
-        # add more expections
+        page.fill_in(:url_original_url, with: 'github')
+        page.click_button('Shorten URL')
+
+        expect(page).to have_current_path(urls_path)
       end
     end
   end
@@ -72,13 +85,14 @@ RSpec.describe 'Short Urls', type: :system do
   describe 'visit' do
     it 'redirects the user to the original url' do
       visit visit_path('ABCDE')
-      # add more expections
     end
 
     context 'when not found' do
       it 'shows a 404 page' do
         visit visit_path('NOTFOUND')
-        # expect page to be a 404
+
+        expect(page).to have_current_path(urls_path)
+        expect(page).to have_text('Url not found')
       end
     end
   end
