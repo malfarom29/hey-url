@@ -2,4 +2,5 @@
 
 class Url < ApplicationRecord
   # scope :latest, -> {}
+  has_many :clicks
 end

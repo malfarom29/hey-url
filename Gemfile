@@ -8,6 +8,10 @@ ruby `cat .ruby-version`.strip
 # https://github.com/fnando/browser
 gem 'browser'
 
+gem 'counter_culture', '~> 2.0'
+
+gem 'multi_json'
+
 gem 'rubocop'
 gem 'rubocop-performance'
 gem 'rubocop-rails'
@@ -19,6 +23,8 @@ gem 'rails', '~> 6.0.3.7'
 gem 'pg', '~> 1'
 # Use Puma as the app server
 gem 'puma', '~> 5'
+# Add representable gem
+gem 'representable'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
